@@ -63,17 +63,16 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(auth -> auth
 
-                        // Register + Login
+
                         .requestMatchers("/api/auth/**").permitAll()
 
-                        // Property APIs
+
                         .requestMatchers("/api/properties/**").permitAll()
 
-                        // Admin APIs
                         .requestMatchers("/api/admin/**")
                         .hasRole("ADMINISTRATOR")
 
-                        // Everything else
+
                         .anyRequest().authenticated()
                 )
 
