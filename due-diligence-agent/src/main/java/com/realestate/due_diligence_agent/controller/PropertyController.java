@@ -3,12 +3,12 @@ package com.realestate.due_diligence_agent.controller;
 import com.realestate.due_diligence_agent.dto.AddressValidationRequest;
 import com.realestate.due_diligence_agent.dto.AddressValidationResponse;
 import com.realestate.due_diligence_agent.entity.Property;
-import com.realestate.due_diligence_agent.service.GoogleGeocodingService;
+import com.realestate.due_diligence_agent.entity.PropertyHistory;
+import com.realestate.due_diligence_agent.service.GeocodingService;
 import com.realestate.due_diligence_agent.service.PropertyService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -16,14 +16,14 @@ import java.util.List;
 public class PropertyController {
 
     private final PropertyService propertyService;
-    private final GoogleGeocodingService googleGeocodingService;
+    private final GeocodingService geocodingService;
 
     public PropertyController(
             PropertyService propertyService,
-            GoogleGeocodingService googleGeocodingService) {
+            GeocodingService geocodingService) {
 
         this.propertyService = propertyService;
-        this.googleGeocodingService = googleGeocodingService;
+        this.geocodingService = geocodingService;
     }
 
     @GetMapping
@@ -38,17 +38,26 @@ public class PropertyController {
         return propertyService.searchByAddress(address);
     }
 
+    @GetMapping("/{id}")
+    public Property getPropertyById(
+            @PathVariable Long id) {
+
+        return propertyService.getPropertyById(id);
+    }
+
     @PostMapping("/validate_address")
     public AddressValidationResponse validateAddress(
             @Valid @RequestBody AddressValidationRequest request) {
+
         System.out.println(">>> VALIDATE ADDRESS CONTROLLER REACHED <<<");
-        return googleGeocodingService.validateAddress(request.getAddress());
+
+        return geocodingService.validateAddress(request.getAddress());
     }
 
     @GetMapping("/{id}/history")
-    public List<Object> getPropertyHistory(
+    public List<PropertyHistory> getPropertyHistory(
             @PathVariable Long id) {
 
-        return Collections.emptyList();
+        return propertyService.getPropertyHistory(id);
     }
 }
