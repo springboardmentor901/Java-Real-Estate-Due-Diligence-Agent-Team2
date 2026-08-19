@@ -58,6 +58,8 @@ public class SecurityConfig {
             HttpSecurity http) throws Exception {
 
         http
+
+                .cors(cors ->{})
                 // REST API - disable CSRF
                 .csrf(csrf -> csrf.disable())
 
