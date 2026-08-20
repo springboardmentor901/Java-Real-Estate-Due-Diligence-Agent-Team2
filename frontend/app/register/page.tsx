@@ -16,7 +16,7 @@ export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const handleRegister = (e: React.FormEvent) => {
+  const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
 
@@ -85,18 +85,36 @@ export default function RegisterPage() {
    }
 
     // Save registered user for frontend testing
-    const user = {
-      name,
-      email,
-      password,
-    };
+    try {
+    const response = await fetch("http://localhost:8080/api/auth/register", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      fullName: name,
+      email: email,
+      password: password,
+      role: "BUYER",
+    }),
+   });
 
-    localStorage.setItem("registeredUser", JSON.stringify(user));
+   const text = await response.text();
+   const data = text ? JSON.parse(text) : {};
 
-    alert("Registration successful! Please login.");
+   if (!response.ok) {
+    setError(data.message || "Registration failed.");
+    return;
+   }
 
-    router.push("/login");
-  };
+   alert("Registration successful! Please login.");
+   router.push("/login");
+
+   } catch (error) {
+   console.error(error);
+   setError("Cannot connect to backend. Please make sure backend is running.");
+    }
+   };
 
   return (
     <main className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-8">

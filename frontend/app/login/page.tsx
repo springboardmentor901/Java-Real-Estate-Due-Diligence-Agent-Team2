@@ -12,7 +12,7 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
 
@@ -40,23 +40,44 @@ export default function LoginPage() {
     }
 
     // Get registered user
-    const storedUser = localStorage.getItem("registeredUser");
+    try {
+   const response = await fetch("http://localhost:8080/api/auth/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      email: email,
+      password: password,
+    }),
+  });
 
-    if (!storedUser) {
-      setError("No account found. Please register first.");
-      return;
-    }
+   const text = await response.text();
 
-    const user = JSON.parse(storedUser);
+   console.log("Status:", response.status);
+   console.log("Response:", text);
 
-    if (user.email !== email || user.password !== password) {
-      setError("Invalid email or password.");
-      return;
-    }
+   if (!response.ok) {
+    setError(text || "Login failed.");
+    return;
+   }
 
-    alert("Login successful!");
+   if (!text) {
+    setError("Backend returned an empty response.");
+    return;
+   }
 
-    router.push("/dashboard");
+   const data = JSON.parse(text);
+
+   localStorage.setItem("token", data.token);
+
+   alert("Login successful!");
+   router.push("/dashboard");
+
+   } catch (error) {
+   console.error(error);
+   setError("Cannot connect to backend. Please make sure backend is running.");
+   }
   };
 
   return (
