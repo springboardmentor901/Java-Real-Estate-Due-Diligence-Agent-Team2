@@ -58,8 +58,8 @@ public class SecurityConfig {
             HttpSecurity http) throws Exception {
 
         http
+                .cors(cors -> {})
 
-                .cors(cors ->{})
                 // REST API - disable CSRF
                 .csrf(csrf -> csrf.disable())
 
@@ -73,22 +73,21 @@ public class SecurityConfig {
                 // Authorization
                 .authorizeHttpRequests(auth -> auth
 
-                        // Login/register
-                        //.requestMatchers("/api/auth/**")
-                        //.permitAll()
+                        // Login/Register APIs are public
+                        .requestMatchers("/api/auth/**")
+                        .permitAll()
 
-                        // Property APIs - temporarily public for testing
-                        //.requestMatchers("/api/properties/**")
-                        //.permitAll()
+                        // Property APIs require authentication
+                        .requestMatchers("/api/properties/**")
+                        .authenticated()
 
-                        // Admin APIs
-                        //.requestMatchers("/api/admin/**")
-                        //.hasRole("ADMINISTRATOR")
+                        // Admin APIs require ADMINISTRATOR role
+                        .requestMatchers("/api/admin/**")
+                        .hasRole("ADMINISTRATOR")
 
                         // Everything else requires authentication
-                        //.anyRequest()
-                        //.authenticated()
-                        .anyRequest().permitAll()
+                        .anyRequest()
+                        .authenticated()
                 )
 
                 .authenticationProvider(authenticationProvider())
