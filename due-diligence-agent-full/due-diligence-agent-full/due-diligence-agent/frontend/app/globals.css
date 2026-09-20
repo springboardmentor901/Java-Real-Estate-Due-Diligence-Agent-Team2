@@ -1,0 +1,83 @@
+@import "tailwindcss";
+
+/*
+  Design tokens — Real Estate Due Diligence(working name).
+  A due-diligence tool for real estate: the palette borrows from title
+  deeds, surveyor's ledgers and brass fixtures rather than generic SaaS
+  blue. Ink on paper, with a brass accent standing in for a wax seal.
+*/
+:root {
+  --color-paper: #f2f1ea;
+  --color-surface: #fffdf9;
+  --color-ink: #201d17;
+  --color-ink-muted: #6b6355;
+  --color-ink-faint: #a39b8b;
+  --color-line: #ddd6c4;
+  --color-line-strong: #c7bea8;
+
+  --color-brass: #8a6a2f;
+  --color-brass-dark: #6d5323;
+  --color-brass-soft: #ede1c3;
+
+  --color-forest: #3d6b4a;
+  --color-forest-soft: #e2ebe0;
+  --color-brick: #a13d2c;
+  --color-brick-dark: #7a2c20;
+  --color-brick-soft: #f3e2dc;
+  --color-amber: #a06a1f;
+  --color-amber-soft: #f1e5cc;
+  --color-steel: #3c5872;
+  --color-steel-soft: #e1e8ee;
+
+  --font-display: var(--font-fraunces);
+  --font-sans: var(--font-plex);
+  --font-mono: var(--font-plex-mono);
+}
+
+@theme inline {
+  --color-paper: var(--color-paper);
+  --color-surface: var(--color-surface);
+  --color-ink: var(--color-ink);
+  --color-ink-muted: var(--color-ink-muted);
+  --color-ink-faint: var(--color-ink-faint);
+  --color-line: var(--color-line);
+  --color-line-strong: var(--color-line-strong);
+
+  --color-brass: var(--color-brass);
+  --color-brass-dark: var(--color-brass-dark);
+  --color-brass-soft: var(--color-brass-soft);
+
+  --color-forest: var(--color-forest);
+  --color-forest-soft: var(--color-forest-soft);
+  --color-brick: var(--color-brick);
+  --color-brick-dark: var(--color-brick-dark);
+  --color-brick-soft: var(--color-brick-soft);
+  --color-amber: var(--color-amber);
+  --color-amber-soft: var(--color-amber-soft);
+  --color-steel: var(--color-steel);
+  --color-steel-soft: var(--color-steel-soft);
+
+  --font-display: var(--font-display);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+::selection {
+  background: var(--color-brass-soft);
+  color: var(--color-ink);
+}
+
+* {
+  scrollbar-color: var(--color-line-strong) transparent;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-brass);
+  outline-offset: 2px;
+}

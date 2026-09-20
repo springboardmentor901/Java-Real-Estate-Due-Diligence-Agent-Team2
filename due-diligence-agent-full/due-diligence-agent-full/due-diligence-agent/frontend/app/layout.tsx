@@ -1,0 +1,44 @@
+import type { Metadata } from "next";
+import { Fraunces, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
+import "./globals.css";
+import { AuthProvider } from "@/lib/auth-context";
+
+const fraunces = Fraunces({
+  variable: "--font-fraunces",
+  subsets: ["latin"],
+  axes: ["opsz", "SOFT", "WONK"],
+});
+
+const plexSans = IBM_Plex_Sans({
+  variable: "--font-plex",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
+
+const plexMono = IBM_Plex_Mono({
+  variable: "--font-plex-mono",
+  subsets: ["latin"],
+  weight: ["400", "500"],
+});
+
+export const metadata: Metadata = {
+  title: "Real Estate Due Diligence Agent",
+  description: "Due diligence, risk assessment, and reporting for real estate properties.",
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html
+      lang="en"
+      className={`${fraunces.variable} ${plexSans.variable} ${plexMono.variable} h-full antialiased`}
+    >
+      <body className="min-h-full flex flex-col bg-paper text-ink">
+        <AuthProvider>{children}</AuthProvider>
+      </body>
+    </html>
+  );
+}
